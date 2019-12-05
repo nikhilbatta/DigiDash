@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-
+using S3TestWebApi.Services;
 
 namespace DigiDashApi
 {
@@ -28,7 +28,8 @@ namespace DigiDashApi
             services.AddCors();
             // adds in refrence loop handling so the same entity refrence doesnt get included when using "include".
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
+            services.AddSingleton<IS3Service, S3Service>();
+            services.AddAWSService<IAmazonS3>();
             // configure strongly typed settings objects
             // var appSettingsSection = Configuration.GetSection("AppSettings");
             // services.Configure<AppSettings>(appSettingsSection);

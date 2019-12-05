@@ -3,23 +3,35 @@ using Amazon.S3.Transfer;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using S3.Models;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using DigiDashApi;
 
-namespace S3TestWebApi.Services : IS3Service
+namespace S3TestWebApi.Services 
 {
-    class UploadFileMPUHighLevelAPITest
+    class S3Service : IS3Service
     {
         private const string bucketName = "testerbuckettt";
         private const string keyName = "TestingObject";
         private const string filePath = "*** provide the full path name of the file to upload ***";
         // Specify your bucket region (an example region is shown).
-        private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USWest2;
+        
+        // private static readonly RegionEndpoint bucketRegion = RegionEndpoint.systemName;
         private static IAmazonS3 s3Client;
 
         public static void Main()
         {
-            s3Client = new AmazonS3Client(bucketRegion);
+            BuildWebHost(args).Run();
+            var newRegion = Amazon.RegionEndpoint.GetBySystemName("us-west-2");
+            s3Client = new AmazonS3Client(newRegion);
             UploadFileAsync().Wait();
         }
+         public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .UseUrls("http://localhost:4000")
+                .Build();
 
         private static async Task UploadFileAsync()
         {

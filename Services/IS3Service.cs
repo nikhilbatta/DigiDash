@@ -1,11 +1,11 @@
 using System.Threading.Tasks;
-using S3TestWebApi.Models;
+using S3.Models;
 
 namespace S3TestWebApi.Services
 {
     public interface IS3Service
     {
-        
+
     }
 
 }
